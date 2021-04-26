@@ -8,7 +8,7 @@
         @if(Auth::guard('backend')->user()->is_admin)
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link {{ $enTab == 0 ? 'active' : 'disabled' }}" href="{{ route('backend.projects') }}"
+                <a class="nav-link {{ $enTab == 0 ? 'active' : '' }}" href="{{ route('backend.projects') }}"
                     onclick="event.preventDefault();
                 document.getElementById('tab1').submit();">В разработке</a>
                 <form id="tab1" action="{{ route('backend.projects') }}" method="GET" style="display: none;">
@@ -17,7 +17,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ $enTab == 1 ? 'active' : 'disabled' }}"
+                <a class="nav-link {{ $enTab == 1 ? 'active' : '' }}"
                     href="{{ route('backend.projects') }}" onclick="event.preventDefault();
                     document.getElementById('tab2').submit();">Завершены</a>
                 <form id="tab2" action="{{ route('backend.projects') }}" method="GET" style="display: none;">

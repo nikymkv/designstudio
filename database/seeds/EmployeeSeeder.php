@@ -20,6 +20,8 @@ class EmployeeSeeder extends Seeder
             'payment_type_id' => 1,
             'hourly_payment' => 0.0,
             'is_admin' => 1,
+            'hired' => now(),
+            'dismissed' => NULL,
             'password' => \Hash::make('0000'),
         ]);
 
@@ -31,6 +33,8 @@ class EmployeeSeeder extends Seeder
             'payment_type_id' => 1,
             'hourly_payment' => 0.0,
             'is_admin' => 0,
+            'hired' => now(),
+            'dismissed' => NULL,
             'password' => \Hash::make('0000'),
         ]);
 
@@ -42,6 +46,8 @@ class EmployeeSeeder extends Seeder
             'payment_type_id' => 1,
             'hourly_payment' => 0.0,
             'is_admin' => 0,
+            'hired' => now(),
+            'dismissed' => NULL,
             'password' => \Hash::make('0000'),
         ]);
 
@@ -53,6 +59,8 @@ class EmployeeSeeder extends Seeder
             'payment_type_id' => 1,
             'hourly_payment' => 0.0,
             'is_admin' => 0,
+            'hired' => now(),
+            'dismissed' => NULL,
             'password' => \Hash::make('0000'),
         ]);
 
@@ -64,6 +72,8 @@ class EmployeeSeeder extends Seeder
             'payment_type_id' => 1,
             'hourly_payment' => 0.0,
             'is_admin' => 0,
+            'hired' => now(),
+            'dismissed' => NULL,
             'password' => \Hash::make('0000'),
         ]);
 
@@ -75,6 +85,8 @@ class EmployeeSeeder extends Seeder
             'payment_type_id' => 1,
             'hourly_payment' => 0.0,
             'is_admin' => 0,
+            'hired' => now(),
+            'dismissed' => NULL,
             'password' => \Hash::make('0000'),
         ]);
 
@@ -86,6 +98,8 @@ class EmployeeSeeder extends Seeder
             'payment_type_id' => 1,
             'hourly_payment' => 0.0,
             'is_admin' => 0,
+            'hired' => now(),
+            'dismissed' => NULL,
             'password' => \Hash::make('0000'),
         ]);
 
@@ -97,6 +111,21 @@ class EmployeeSeeder extends Seeder
             'payment_type_id' => 2,
             'hourly_payment' => 500.0,
             'is_admin' => 0,
+            'hired' => now(),
+            'dismissed' => NULL,
+            'password' => \Hash::make('0000'),
+        ]);
+
+        Employee::create([
+            'name' => 'Тест Тестович',
+            'email' => 'test@mail.com',
+            'dob' => '2000-05-22',
+            'phone' => '380777777729',
+            'payment_type_id' => 2,
+            'hourly_payment' => 500.0,
+            'is_admin' => 0,
+            'hired' => now(),
+            'dismissed' => now(),
             'password' => \Hash::make('0000'),
         ]);
     }

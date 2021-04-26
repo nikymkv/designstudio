@@ -22,7 +22,8 @@ class CreateEmployeesTable extends Migration
             $table->unsignedBigInteger('payment_type_id');
             $table->float('hourly_payment')->default(0.00);
             $table->boolean('is_admin')->default(FALSE);
-            $table->boolean('is_closed')->default(FALSE);
+            $table->date('hired')->default(now());
+            $table->date('dismissed')->nullable();
             $table->string('password');
             $table->timestamps();
 

@@ -8,7 +8,9 @@ use App\Models\Employee;
 use App\Models\EmployeeSpecializations;
 use App\Models\Specialization;
 use App\Models\Project;
+use App\Models\PaymentType;
 use App\Http\Requests\Admin\Employee\StoreEmployeeRequest;
+use App\Http\Requests\Admin\Employee\UpdateEmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -62,7 +64,7 @@ class EmployeeController extends Controller
                 return redirect()->back();
             }
         }
-
+        $paymentType = PaymentType::all();
         $type = $request->input('param');
         $enTab = 0;
         if ($type == 1) {
@@ -76,14 +78,21 @@ class EmployeeController extends Controller
                 ->get();
         }
 
-        return view('backend.employees.show', \compact('employee', 'projects', 'enTab'));
+        return view('backend.employees.show', \compact('employee', 'projects', 'enTab', 'paymentType'));
     }
 
-    public function update(Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         if ( ! $this->isAdmin()) {
             return redirect()->back();
         }
+
+        $employee->update($request->all());
+        if ( ! isset($employee)) {
+            return back();
+        }
+
+        return back();
     }
 
     public function destroy(Employee $employee)

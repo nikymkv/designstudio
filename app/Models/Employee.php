@@ -21,6 +21,8 @@ class Employee extends Authenticatable
         'payment_type_id',
         'hourly_payment',
         'is_admin',
+        'hired',
+        'dismissed',
     ];
 
     /**

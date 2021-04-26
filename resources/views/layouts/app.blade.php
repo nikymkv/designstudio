@@ -49,6 +49,11 @@
                                     <a class="dropdown-item" href="{{ route('backend.employees.show', ['employee' => Auth::guard('backend')->user()]) }}">
                                         Профиль
                                     </a>
+                                    @if (Auth::guard('backend')->user()->is_admin)
+                                        <a class="dropdown-item" href="{{ route('backend.pdf.settings') }}">
+                                            Экспорт
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('backend.logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

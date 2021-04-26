@@ -8,7 +8,7 @@
 </head>
 <style>
     body { font-family: DejaVu Sans, sans-serif; }
-  </style>
+</style>
 <body>
     <p style="text-align:center"><strong>Проект</strong> #{{$project->id}}</p>
 

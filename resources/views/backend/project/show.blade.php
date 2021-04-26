@@ -37,38 +37,69 @@
                         <label for="price">Итоговая цена</label>
                         <input type="number" class="form-control" name="price" id="price" value="{{ $project->price }}">
                     </div>
-                    <p>Клиент:
-                        <a
-                            href="{{route('backend.clients.show', ['client' => $project->client])}}">{{ $project->client->name }}</a>
-                    </p>
+                    <div>
+                        <label for="client">Клиент:</label>
+                        <p id="client">
+                            <a href="{{route('backend.clients.show', ['client' => $project->client])}}">{{ $project->client->name }}</a>
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <label for="service">Услуга</label>
+                            <input type="text" class="form-control" name="service" id="service" value="{{ $project->service->name }}" readonly>
+                        </p>
+                    </div>
+                    @if (\Auth::guard('backend')->user()->is_admin)
+                        <p>
+                            <select name="current_employee_id">
+                                @foreach ($employees as $employee)
+                                <option value="{{ $employee->id }}"
+                                    {{ $employee->id === $project->currentEmployee->id ? 'selected' : ''}}>
+                                    {{ $employee->name }}</option>
+                                @endforeach
+                            </select>
+                        </p>
+                        <p>
+                            <select name="current_status_id">
+                                @foreach ($statuses as $status)
+                                <option value="{{ $status->id }}"
+                                    {{ $status->id === $project->status->last()->id ? 'selected' : '' }}>
+                                    {{ $status->name }}</option>
+                                @endforeach
+                            </select>
+                        </p>
+                    @else
+                    <div>
+                            <label for="employee">Над проектом работает:</label>
+                        <p>
+                            <a id="employee" href="{{ route('backend.employees.show', ['employee' => $project->currentEmployee->id]) }}">
+                                {{ $project->currentEmployee->name }}
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <label for="project_status">Текущий статус:</label>
+                        <p id="project_status">
+                            {{ $project->status->last()->pivot->date_created }} {{ $project->status->last()->name }}
+                        </p>
+                    </div>
+                    @endif
+
                     <p>
-                        <label for="service">Услуга</label>
-                        <input type="text" class="form-control" name="service" id="service" value="{{ $project->service->name }}" readonly>
-                    </p>
-                    <p>
-                        <select name="current_employee_id">
-                            @foreach ($employees as $employee)
-                            <option value="{{ $employee->id }}"
-                                {{ $employee->id === $project->currentEmployee->id ? 'selected' : ''}}>
-                                {{ $employee->name }}</option>
-                            @endforeach
-                        </select>
-                    </p>
-                    <p>
-                        <select name="current_status_id">
-                            @foreach ($statuses as $status)
-                            <option value="{{ $status->id }}"
-                                {{ $status->id === $project->status->last()->id ? 'selected' : '' }}>
-                                {{ $status->name }}</option>
-                            @endforeach
-                        </select>
-                    </p>
-                    <p>
-                        <textarea name="description" id="" cols="30" rows="10">{{ $project->description }}</textarea>
+                        <label for="desc">Комментарий:</label>
+                        <textarea name="description" id="desc" style="width:100%;" rows="10">{{ $project->description }}</textarea>
                     </p>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
+                <form style="margin-top: 20px;" action="{{ route('backend.pdf.preview-project') }}" method="get">
+                    @csrf
+                    <input type="hidden" name="type" value="project">
+                    <input type="hidden" name="project_id" value="{{ $project->id }}">
+                    <input type="hidden" name="is_array" value="0">
+                    <button type="submit" class="btn btn-primary">Генерация PDF</button>
+                </form>
             </div>
+
         </div>
     </div>
     <div class="col mr-2">

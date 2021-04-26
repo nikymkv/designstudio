@@ -71,8 +71,10 @@ Route::name('backend.')
                 // Route::delete('services/{service}', 'ServiceController@destroy')->name('services.destroy');
 
                 // PDF
-
-                Route::get('pdf/project', 'PdfController@preview')->name('employees.preview');
+                Route::get('pdf', 'PdfController@settings')->name('pdf.settings');
+                Route::post('pdf', 'PdfController@handle')->name('pdf.handle');
+                Route::get('pdf/project', 'PdfController@previewProject')->name('pdf.preview-project');
+                Route::get('pdf/employee', 'PdfController@previewEmployee')->name('pdf.preview-employee');
 
             });
     });
