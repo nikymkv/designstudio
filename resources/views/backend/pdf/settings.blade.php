@@ -24,7 +24,12 @@
 
                     <div class="form-group">
                         <label for="date_created">За дату:</label>
-                        <input type="date" name="date_created" id="date_created">
+                        <select name="date_created" id="date_created">
+                            <option value="" selected>Не выбрано</option>
+                            @foreach ($dates as $date)
+                                <option value="{{ $date }}">{{ $date }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="1" name="all" id="all">

@@ -19,24 +19,22 @@
                 <th>Почта</th>
                 <th>Телефон</th>
                 <th>Дата рождения</th>
-                <th>Принят на работу</th>
-                <th>Уволен</th>
+                <th>Принят на работу/Уволен</th>
                 <th>Тип оплаты</th>
                 <th>Оплата за час</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($projects as $key => $project)
+            @foreach ($employees as $key => $employee)
                 <tr>
                     <td>{{ ++$key }}</td>
-                    <td>{{ $project->name_company }}</td>
-                    <td>{{ $project->date_created }}</td>
-                    <td>{{ $project->deadline ?? 'Пусто' }}</td>
-                    <td>{{ $project->price }}</td>
-                    <td>{{ $project->currentEmployee->name }}</td>
-                    <td>{{ $project->client->name }}</td>
-                    <td>{{ $project->service->name }}</td>
-                    <td>{{ $project->status->last()->name }}</td>
+                    <td>{{ $employee->name }}</td>
+                    <td>{{ $employee->email }}</td>
+                    <td>{{ $employee->phone ?? 'Пусто' }}</td>
+                    <td>{{ $employee->dob }}</td>
+                    <td>{{ $employee->hired }}/{{ $employee->dismissed }}</td>
+                    <td>{{ $employee->payment->name }}</td>
+                    <td>{{ $employee->hourly_payment }}</td>
                 </tr>
             @endforeach
         </tbody>
