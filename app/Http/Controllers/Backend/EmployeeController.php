@@ -40,7 +40,9 @@ class EmployeeController extends Controller
             return redirect()->back();
         }
 
-        return view('backend.employees.create');
+        $paymentType = PaymentType::all();
+
+        return view('backend.employees.create', compact('paymentType'));
     }
 
     public function store(StoreEmployeeRequest $request, Employee $employee)
@@ -49,12 +51,23 @@ class EmployeeController extends Controller
             return redirect()->back();
         }
 
-        $employee->update($request->all());
+        $validated = $request->validated();
+        $employee->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => \Hash::make($validated['name']),
+            'dob' => $validated['dob'],
+            'phone' => $validated['phone'],
+            'payment_type_id' => $validated['payment_type_id'],
+            'hourly_payment' => $validated['hourly_payment'] ?? 0.00,
+        ]);
+
         if ( ! isset($employee)) {
             return back();
         }
 
-        return view('backend.employees.create');
+        $paymentType = PaymentType::all();
+        return view('backend.employees.create', compact('paymentType'));
     }
 
     public function show(Request $request, Employee $employee)

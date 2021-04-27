@@ -53,6 +53,12 @@
                                         <a class="dropdown-item" href="{{ route('backend.pdf.settings') }}">
                                             Экспорт
                                         </a>
+                                        <a class="dropdown-item" href="{{ route('backend.employees.index') }}">
+                                            Сотрудники
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('backend.projects') }}">
+                                            Проекты
+                                        </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('backend.logout') }}"
                                        onclick="event.preventDefault();

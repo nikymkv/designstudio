@@ -51,6 +51,8 @@ Route::name('backend.')
 
                 // Clients
                 Route::get('clients', 'ClientController@index')->name('clients.index');
+                Route::get('clients/create', 'ClientController@create')->name('clients.create');
+                Route::post('clients', 'ClientController@store')->name('clients.store');
                 Route::get('clients/{client}', 'ClientController@show')->name('clients.show');
                 Route::put('clients/{client}', 'ClientController@update')->name('clients.update');
 

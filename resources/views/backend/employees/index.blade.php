@@ -23,6 +23,7 @@
                 @endforeach
             </div>
         </div>
+        <a href="{{ route('backend.employees.create') }}"><button>Добавить сотрудника</button></a>
         <table class="table">
             <thead>
                 <tr>

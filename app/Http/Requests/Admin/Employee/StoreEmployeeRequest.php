@@ -31,7 +31,7 @@ class StoreEmployeeRequest extends FormRequest
             'phone' => 'required|string|max:15',
             'payment_type_id' => 'required|numeric',
             'hourly_payment' => 'nullable|numeric',
-            'is_admin' => 'required|numeric',
+            'is_admin' => 'sometimes|numeric',
         ];
     }
 }
