@@ -32,6 +32,7 @@ class StoreEmployeeRequest extends FormRequest
             'payment_type_id' => 'required|numeric',
             'hourly_payment' => 'nullable|numeric',
             'is_admin' => 'sometimes|numeric',
+            'specs' => 'required|array',
         ];
     }
 }

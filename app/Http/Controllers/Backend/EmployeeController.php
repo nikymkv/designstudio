@@ -41,8 +41,9 @@ class EmployeeController extends Controller
         }
 
         $paymentType = PaymentType::all();
+        $specs = Specialization::all();
 
-        return view('backend.employees.create', compact('paymentType'));
+        return view('backend.employees.create', compact('paymentType', 'specs'));
     }
 
     public function store(StoreEmployeeRequest $request, Employee $employee)
@@ -52,6 +53,7 @@ class EmployeeController extends Controller
         }
 
         $validated = $request->validated();
+        dd($validated);
         $employee->update([
             'name' => $validated['name'],
             'email' => $validated['email'],

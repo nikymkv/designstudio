@@ -29,6 +29,14 @@
                         <input type="text" class="form-control" name="phone" id="phone">
                     </div>
                     <div class="form-group">
+                        <label for="specs">Специализация</label>
+                        <select name="specs[]" id="specs" multiple="multiple">
+                            @foreach ($specs as $spec)
+                                <option value="{{ $spec->id }}">{{ $spec->name }}</option>
+                            @endforeach
+                          </select>
+                    </div>
+                    <div class="form-group">
                         <label for="password">Пароль</label>
                         <input type="password" class="form-control" name="password" id="password">
                     </div>
