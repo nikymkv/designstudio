@@ -26,7 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($projects as $key => $project)
+            @foreach ($data['projects'] as $key => $project)
                 <tr>
                     <td>{{ ++$key }}</td>
                     <td>{{ $project->name_company }}</td>

@@ -21,7 +21,6 @@
                         <label for="model_id">ID сущности</label>
                         <input type="number" name="model_id" id="model_id">
                     </div>
-
                     <div class="form-group">
                         <label for="date_created">За дату:</label>
                         <select name="date_created" id="date_created">

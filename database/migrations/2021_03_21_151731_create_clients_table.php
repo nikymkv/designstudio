@@ -19,6 +19,7 @@ class CreateClientsTable extends Migration
             $table->string('email')->unique();
             $table->string('phone', 15);
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
             
             $table->engine = "InnoDB";

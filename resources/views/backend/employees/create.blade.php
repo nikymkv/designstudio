@@ -6,7 +6,7 @@
 @endif
 <div class="row">
     <div class="col-sm-3"></div>
-    <div class="col-sm-5 ml-2">
+    <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Информация о сотруднике</h5>
@@ -38,11 +38,11 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Пароль</label>
-                        <input type="password" class="form-control" name="password" id="password">
+                        <input type="password" class="form-control" name="password" id="password" autocomplete="on">
                     </div>
                     <div class="form-group">
                         <label for="password_confirmation">Подтверждение пароля</label>
-                        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
+                        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" autocomplete="on">
                     </div>
                     <div class="form-group">
                         <label for="type_payment">Тип оплаты:</label>
@@ -65,7 +65,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
+                    <button type="submit" class="part-btn mt-3">Сохранить</button>
                 </form>
             </div>
         </div>

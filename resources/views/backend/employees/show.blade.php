@@ -31,6 +31,16 @@
                         <input type="text" class="form-control" name="phone" id="phone" value="{{ $employee->phone }}">
                     </div>
                     <div class="form-group">
+                        <label for="specs">Специализация</label>
+                        <select name="specs[]" id="specs" multiple="multiple">
+                            @foreach ($specs as $spec)
+                                <option value="{{ $spec->id }}" {{ $employee->specs->contains(function ($value, $key) use ($spec) {
+                                    return $spec->id == $value->id;
+                                }) ? 'selected' : '' }}>{{ $spec->name }}</option>
+                            @endforeach
+                          </select>
+                    </div>
+                    <div class="form-group">
                         <label for="type_payment">Тип оплаты:</label>
                         <p>
                             <select name="payment_type_id" id="type_payment">
@@ -47,15 +57,14 @@
                                 value="{{ $employee->hourly_payment }}">
                         </div>
                     @endif
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="part-btn">Сохранить</button>
+                </form>
+                <form class="mt-2" action="{{ route('backend.pdf.handle.employee') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="employee_id" value="{{ $employee->id }}">
+                    <button type="submit" class="part-btn">Генерация PDF</button>
                 </form>
             </div>
-            <form action="{{ route('backend.pdf.preview-employee') }}" method="get">
-                @csrf
-                <input type="hidden" name="employee_id" value="{{ $employee->id }}">
-                <input type="hidden" name="is_array" value="0">
-                <button type="submit" class="btn btn-primary">Генерация PDF</button>
-            </form>
         </div>
     </div>
     <div class="col">
@@ -82,22 +91,21 @@
                 </li>
                 </ul>
                 <table class="table">
-                    <thead>
+                    <thead class="table-head">
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Название</th>
                             <th scope="col">Услуга</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="table-body">
                         @foreach($projects as $project)
-                        <tr>
+                        <tr onclick="window.location.href='{{ route('backend.projects.show', ['project' => $project]) }}'">
                             <td>
                                 {{ $project->id }}
                             </td>
                             <td>
-                                <a
-                                    href="{{ route('backend.projects.show', ['project' => $project]) }}">{{ $project->name_company }}</a>
+                                    {{ $project->name_company }}
                             </td>
                             <td>
                                 {{ $project->service->name }}

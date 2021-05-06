@@ -25,6 +25,7 @@ class CreateEmployeesTable extends Migration
             $table->date('hired')->default(now());
             $table->date('dismissed')->nullable();
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
 
             $table->engine = "InnoDB";

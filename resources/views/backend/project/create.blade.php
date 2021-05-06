@@ -37,7 +37,8 @@
                         <input type="number" class="form-control" name="price" id="price">
                     </div>
                     <p>
-                        <select name="current_employee_id">
+                        <label for="current_employee_id">Сотрудник</label>
+                        <select name="current_employee_id" id="current_employee_id">
                             @foreach ($employees as $employee)
                             <option value="{{ $employee->id }}">
                                 {{ $employee->name }}
@@ -47,16 +48,18 @@
                     </p>
                     <input type="hidden" name="client_id" value="{{ $client->id }}">
                     <p>
-                        <select name="service_id">
+                        <label for="service_id">Услуга</label>
+                        <select name="service_id" id="service_id">
                             @foreach ($services as $service)
                                 <option value="{{ $service->id }}">{{ $service->name }} ({{ $service->type }})</option>
                             @endforeach
                         </select>
                     </p>
                     <p>
-                        <textarea name="description" id="" cols="30" rows="10"></textarea>
+                        <label for="description">Комментарий</label>
+                        <textarea name="description" id="description" style="width:100%;" rows="10"></textarea>
                     </p>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="part-btn">Сохранить</button>
                 </form>
             </div>
         </div>

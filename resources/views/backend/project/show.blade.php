@@ -51,7 +51,7 @@
                     </div>
                     @if (\Auth::guard('backend')->user()->is_admin)
                         <p>
-                            <select name="current_employee_id">
+                            <select name="current_employee_id" id="current_employee_id">
                                 @foreach ($employees as $employee)
                                 <option value="{{ $employee->id }}"
                                     {{ $employee->id === $project->currentEmployee->id ? 'selected' : ''}}>
@@ -60,7 +60,7 @@
                             </select>
                         </p>
                         <p>
-                            <select name="current_status_id">
+                            <select name="current_status_id" id="current_status_id">
                                 @foreach ($statuses as $status)
                                 <option value="{{ $status->id }}"
                                     {{ $status->id === $project->status->last()->id ? 'selected' : '' }}>
@@ -89,14 +89,12 @@
                         <label for="desc">Комментарий:</label>
                         <textarea name="description" id="desc" style="width:100%;" rows="10">{{ $project->description }}</textarea>
                     </p>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="part-btn">Сохранить</button>
                 </form>
-                <form style="margin-top: 20px;" action="{{ route('backend.pdf.preview-project') }}" method="get">
+                <form class="mt-2" action="{{ route('backend.pdf.handle.project') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="type" value="project">
                     <input type="hidden" name="project_id" value="{{ $project->id }}">
-                    <input type="hidden" name="is_array" value="0">
-                    <button type="submit" class="btn btn-primary">Генерация PDF</button>
+                    <button type="submit" class="part-btn">Генерация PDF</button>
                 </form>
             </div>
 

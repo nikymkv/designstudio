@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Dompdf\Dompdf;
 use View;
+use Carbon\Carbon;
 
 class PdfController extends Controller
 {
@@ -19,61 +20,87 @@ class PdfController extends Controller
         $this->pdf = new Dompdf();
     }
 
-    public function settings()
+    public function handleEmployees(Request $request)
     {
-        $dates = Project::selectRaw("DATE_FORMAT(date_created, '%Y') as date_created")
-            ->orderBy('date_created', 'desc')
-            ->groupBy('date_created')
-            ->pluck('date_created');
-        return view('backend.pdf.settings', compact('dates'));
-    }
+        $typeEvent = (int)$request->input('typeEvent');
+        $startDate = $request->input('startDate') ?? NULL;
+        $endDate = $request->input('endDate') ?? NULL;
 
-    public function handle(Request $request)
-    {
-        $modelType = $request->get('model_type') ?? null;
-        if (isset($modelType) && $modelType == 1) { // сотрудники
-            $this->generateEmployeePdf($request->input());
-        } else if(isset($modelType) && $modelType == 2) {
-            $this->generateProjectPdf($request->input());
-        }
-
-        return $this->pdf->stream('document.pdf');
-    }
-
-
-    public function generateProjectPdf(array $input)
-    {
-        $all = $input['all'] ?? null;
-        if (isset($all)) {
-            $projects = isset($input['date_created'])
-                        ? Project::whereYear('date_created', $input['date_created'])->get()
-                        : Project::all();
-            $view = view('backend.pdf.projects.projects', compact('projects'));
-            $this->pdf->loadHtml($view->render());
-            $this->pdf->setPaper('A4', 'landscape');
+        if ($typeEvent == 1) { // Дата рождения
+            if ($startDate && $endDate) {
+                $data['employees'] = Employee::whereBetween('dob', [$startDate, $endDate])->get();
+            } else if ($startDate) {
+                $data['employees'] = Employee::where('dob', $startDate)->get();
+            }
+        } else if ($typeEvent == 2) { // Дата принятия
+            if ($startDate && $endDate) {
+                $data['employees'] = Employee::whereBetween('hired', [$startDate, $endDate])->get();
+            } else if ($startDate) {
+                $data['employees'] = Employee::where('hired', $startDate)->get();
+            }
+        } else if ($typeEvent == 3) { // Дата увольнения
+            if ($startDate && $endDate) {
+                $data['employees'] = Employee::whereBetween('dismissed', [$startDate, $endDate])->get();
+            } else if ($startDate) {
+                $data['employees'] = Employee::where('dismissed', $startDate)->get();
+            }
         } else {
-            $project = Project::findOrFail($input['model_id']);
-            $view = view('backend.pdf.projects.project', compact('project'));
-            $this->pdf->loadHtml($view->render());
+            abort(404);
         }
+
+        $this->generatePdf('backend.pdf.employees.employees', $data, true);
+
+        return $this->pdf->stream('employees.pdf');
+    }
+
+    public function handleEmployee(Request $request)
+    {
+        $employeeId = $request->input('employee_id');
+        $data['employee'] = Employee::findOrFail($employeeId);
+        if ($data['employee']) {
+            $data['projects'] = Project::where('current_employee_id', $data['employee']->id)->get();
+            $this->generatePdf('backend.pdf.employees.employee', $data, true);
+            return $this->pdf->stream('employee_'.$data['employee']->id.'.pdf');
+        } else {
+            abort(404);
+        }
+    }
+
+    public function handleProjects(Request $request)
+    {
+        $startDate = $request->input('startDate') ?? NULL;
+        $endDate = $request->input('endDate') ?? NULL;
+
+        if ($startDate && $endDate) {
+            $data['projects'] = Project::whereBetween('date_created', [$startDate, $endDate])->get();
+        } else if ($startDate) {
+            $data['projects'] = Project::where('date_created', $startDate)->get();
+        } else {
+            abort(404);
+        }
+
+        $this->generatePdf('backend.pdf.projects.projects', $data, true);
+
+        return $this->pdf->stream('projects.pdf');
+    }
+
+    public function handleProject(Request $request)
+    {
+        $projectId = $request->input('project_id');
+        $data['project'] = Project::findOrFail($projectId);
+        if ($data['project']) {
+            $this->generatePdf('backend.pdf.projects.project', $data, false);
+            return $this->pdf->stream('project_'.$data['project']->id.'.pdf');
+        } else {
+            abort(404);
+        }
+    }
+
+    public function generatePdf(string $view, array $data, bool $landscape)
+    {
+        $view = view($view, compact('data'));
+        $this->pdf->loadHtml($view->render());
+        $landscape ? $this->pdf->setPaper('A4', 'landscape') : null;
         $this->pdf->render();
     }
-    
-    public function generateEmployeePdf(array $input)
-    {
-        $all = $input['all'] ?? null;
-        if (isset($all)) {
-            $employees = Employee::all();
-            $view = view('backend.pdf.employees.employees', compact('employees'));
-            $this->pdf->loadHtml($view->render());
-            $this->pdf->setPaper('A4', 'landscape');
-        } else {
-            $employee = Employee::findOrFail($input['model_id']);
-            $projects = Project::where('current_employee_id', $input['model_id'])->get();
-            $view = view('backend.pdf.employees.employee', compact('employee', 'projects'));
-            $this->pdf->loadHtml($view->render());
-        }
-        $this->pdf->render();
-    }
-
 }

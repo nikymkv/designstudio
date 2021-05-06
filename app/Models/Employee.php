@@ -48,6 +48,21 @@ class Employee extends Authenticatable
         return $this->belongsTo(PaymentType::class, 'payment_type_id', 'id');
     }
 
+    public function specs()
+    {
+        return $this->belongsToMany(Specialization::class, 'employee_specializations', 'employee_id', 'specialization_id');
+    }
+
+    public function specsToString()
+    {
+        $specs = $this->specs;
+        $arr = [];
+        foreach ($specs as $spec) {
+            $arr[] = $spec->name;
+        }
+        return implode(', ', $arr);
+    }
+
     public function scopeFinished($query)
     {
         return $query->where('current_status_id', 23);

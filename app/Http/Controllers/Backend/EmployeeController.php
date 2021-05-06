@@ -46,15 +46,14 @@ class EmployeeController extends Controller
         return view('backend.employees.create', compact('paymentType', 'specs'));
     }
 
-    public function store(StoreEmployeeRequest $request, Employee $employee)
+    public function store(StoreEmployeeRequest $request)
     {
         if ( ! $this->isAdmin()) {
             return redirect()->back();
         }
 
         $validated = $request->validated();
-        dd($validated);
-        $employee->update([
+        $employee = Employee::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => \Hash::make($validated['name']),
@@ -64,12 +63,12 @@ class EmployeeController extends Controller
             'hourly_payment' => $validated['hourly_payment'] ?? 0.00,
         ]);
 
-        if ( ! isset($employee)) {
-            return back();
+        if ($employee) {
+            $employee->specs()->attach($validated['specs']);
+            return redirect()->route('backend.employees.create');
         }
 
-        $paymentType = PaymentType::all();
-        return view('backend.employees.create', compact('paymentType'));
+        return back();
     }
 
     public function show(Request $request, Employee $employee)
@@ -79,6 +78,7 @@ class EmployeeController extends Controller
                 return redirect()->back();
             }
         }
+        $specs = Specialization::all();
         $paymentType = PaymentType::all();
         $type = $request->input('param');
         $enTab = 0;
@@ -93,7 +93,7 @@ class EmployeeController extends Controller
                 ->get();
         }
 
-        return view('backend.employees.show', \compact('employee', 'projects', 'enTab', 'paymentType'));
+        return view('backend.employees.show', \compact('employee', 'projects', 'enTab', 'paymentType', 'specs'));
     }
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
@@ -101,13 +101,21 @@ class EmployeeController extends Controller
         if ( ! $this->isAdmin()) {
             return redirect()->back();
         }
-
-        $employee->update($request->all());
-        if ( ! isset($employee)) {
-            return back();
+        $validated = $request->validated();
+        $employee->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => \Hash::make($validated['name']),
+            'dob' => $validated['dob'],
+            'phone' => $validated['phone'],
+            'payment_type_id' => $validated['payment_type_id'],
+            'hourly_payment' => $validated['hourly_payment'] ?? 0.00,
+        ]);
+        
+        if (isset($employee)) {
+            $employee->specs()->sync($validated['specs']);
+            return redirect()->route('backend.employees.index');
         }
-
-        return back();
     }
 
     public function destroy(Employee $employee)

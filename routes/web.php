@@ -1,5 +1,7 @@
 <?php
 
+Route::redirect('/', 'login', 301);
+
 /**
  * Web routes
  */
@@ -10,20 +12,22 @@ Route::name('web.')
         Route::get('login', 'Auth\LoginController@showLoginForm')->name('login_form');
         Route::post('login', 'Auth\LoginController@login')->name('login');
         Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+        Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register_form');
+        Route::post('register', 'Auth\RegisterController@register')->name('register');
 
         Route::middleware(['auth.web'])
             ->group(function () {
                 // Projects
-                Route::get('projects', 'ProjectController@index')->name('projects');
-                // Route::get('projects/create', 'ProjectController@create')->name('projects.create');
-                // Route::post('projects', 'ProjectController@store')->name('projects.store');
-                // Route::get('projects/{project}', 'ProjectController@show')->name('projects.show');
-                // Route::get('projects/{project}/edit', 'ProjectController@edit')->name('projects.edit');
-                // Route::put('projects/{project}', 'ProjectController@update')->name('projects.update');
-                // Route::delete('projects/{project}', 'ProjectController@destroy')->name('projects.destroy');
+                Route::get('projects', 'ProjectController@index')->name('projects.index');
+                Route::get('projects/{project}', 'ProjectController@show')->name('projects.show');
+
+                Route::get('profile', 'ClientController@show')->name('client.show');
+                Route::put('profile/{client}', 'ClientController@update')->name('client.update');
+
+                Route::get('portfolio', 'PortfolioController@index')->name('portfolio.index');
+
             });
     });
-
 
 /**
  * --------------------------------------------------------------------------
@@ -74,10 +78,12 @@ Route::name('backend.')
 
                 // PDF
                 Route::get('pdf', 'PdfController@settings')->name('pdf.settings');
-                Route::post('pdf', 'PdfController@handle')->name('pdf.handle');
+                Route::post('pdf/employees', 'PdfController@handleEmployees')->name('pdf.handle.employees');
+                Route::post('pdf/employee', 'PdfController@handleEmployee')->name('pdf.handle.employee');
+                Route::post('pdf/projects', 'PdfController@handleProjects')->name('pdf.handle.projects');
+                Route::post('pdf/project', 'PdfController@handleProject')->name('pdf.handle.project');
                 Route::get('pdf/project', 'PdfController@previewProject')->name('pdf.preview-project');
                 Route::get('pdf/employee', 'PdfController@previewEmployee')->name('pdf.preview-employee');
-
             });
     });
 

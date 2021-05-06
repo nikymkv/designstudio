@@ -6,3 +6,50 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.table-head tr {
+    background-color: #000;
+    color: #fff;
+}
+
+.table-body tr {
+    cursor: pointer;
+}
+
+.table-body tr:hover {
+    background-color:#e50914;
+    color: #fff;
+}
+
+a.part-btn, button.part-btn {
+    background-color: #ffff;
+    border: 1px solid #e50914;
+    font-weight: bold;
+    border-radius: 6px;
+    color: #000;
+    padding: 7px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.part-btn:hover {
+    background-color: #e50914;
+    color: white;
+    transition: .3s;
+}
+
+.history {
+    overflow: auto;
+    height: auto;
+    max-height: 700px;
+}
+
+a.login {
+    color: white;
+    background-color: #e50914;
+}

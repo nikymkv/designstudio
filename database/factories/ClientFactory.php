@@ -22,5 +22,6 @@ $factory->define(Client::class, function (Faker $faker) {
         'email' => $this->faker->unique()->safeEmail,
         'phone' => $this->faker->e164PhoneNumber,
         'password' => \Hash::make('0000'),
+        'remember_token' => Str::random(10),
     ];
 });

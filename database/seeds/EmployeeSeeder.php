@@ -23,6 +23,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => NULL,
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
 
         Employee::create([
@@ -36,6 +37,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => NULL,
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
 
         Employee::create([
@@ -49,6 +51,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => NULL,
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
 
         Employee::create([
@@ -62,6 +65,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => NULL,
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
 
         Employee::create([
@@ -75,6 +79,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => NULL,
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
 
         Employee::create([
@@ -88,6 +93,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => NULL,
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
 
         Employee::create([
@@ -101,6 +107,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => NULL,
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
 
         Employee::create([
@@ -114,6 +121,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => NULL,
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
 
         Employee::create([
@@ -127,6 +135,7 @@ class EmployeeSeeder extends Seeder
             'hired' => now(),
             'dismissed' => now(),
             'password' => \Hash::make('0000'),
+            'remember_token' => \Str::random(10),
         ]);
     }
 }
