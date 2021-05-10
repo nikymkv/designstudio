@@ -13,17 +13,35 @@
                     @method('PUT')
                     <div class="form-group">
                         <label for="name">Имя</label>
-                        <input type="text" class="form-control" name="name" id="name" value="{{ $client->name }}">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ $client->name }}">
+
+                        @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="email">Почта</label>
-                        <input type="text" class="form-control" name="email" id="email" value="{{ $client->email }}">
+                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ $client->email }}">
+
+                        @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="phone">Телефон</label>
-                        <input type="text" class="form-control" name="phone" id="phone" value="{{ $client->phone }}">
+                        <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" value="{{ $client->phone }}">
+
+                        @error('phone')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="part-btn">Сохранить</button>
                 </form>
 
             </div>
@@ -33,26 +51,27 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Проекты
-                    <button type="button" class="btn btn-link">
-                        <a href="{{ route('backend.projects.create', ['client' => $client]) }}">Добавить проект</a>
-                    </button>
+                    <form class="mt-2" action="{{ route('backend.projects.create', ['client' => $client]) }}" method="get">
+                        @csrf
+                        <button type="submit" class="part-btn">Добавить проект</button>
+                    </form>
                 </h5>
                 <table class="table">
-                    <thead>
+                    <thead class="table-head">
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Название</th>
                             <th scope="col">Услуга</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="table-body">
                             @foreach($projects as $project)
-                                <tr>
+                                <tr onclick="window.location.href='{{ route('backend.projects.show', ['project' => $project]) }}'">
                                     <td>
                                         {{ $project->id }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('backend.projects.show', ['project' => $project]) }}">{{ $project->name_company }}</a>
+                                        {{ $project->name_company }}
                                     </td>
                                     <td>
                                         {{ $project->service->name }}

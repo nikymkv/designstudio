@@ -5,7 +5,6 @@
     <div class="col-sm"></div>
     <div class="col-sm-10">
         <h2>Проекты</h2>
-        @if(Auth::guard('backend')->user()->is_admin)
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link {{ $enTab == 0 ? 'active' : '' }}" href="{{ route('backend.projects') }}" onclick="event.preventDefault();
@@ -22,13 +21,12 @@
                     <input type="hidden" name="param" value="1">
                 </form>
             </li>
-
+            @if(Auth::guard('backend')->user()->is_admin)
             <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Экспорт</a>
             </li>
+            @endif
 
-        </ul>
-        @endif
         <table class="table">
             <thead class="table-head">
                 <tr>
@@ -43,7 +41,7 @@
                 @foreach($projects as $key => $project)
                 <tr onclick="window.location.href='{{ route('backend.projects.show', ['project' => $project]) }}';">
                     <td>
-                        {{ $key }}
+                        {{ $key+1 }}
                     </td>
                     <td>
                         {{ $project->name_company }}
@@ -52,7 +50,7 @@
                         {{ $project->date_created }}
                     </td>
                     <td>
-                        {{ $project->service->name }}
+                        {{ $project->service->name }} ({{ $project->service->type }})
                     </td>
                     <td>
                         {{ $project->client->name }}

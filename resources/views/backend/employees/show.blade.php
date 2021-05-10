@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@if($errors->any())
-    {{ dd($errors->messages()) }}
-@endif
 <div class="row">
     <div class="col-sm-5 ml-3">
         <div class="card">
@@ -16,23 +13,61 @@
                     @method('PUT')
                     <div class="form-group">
                         <label for="name">Имя сотрудника</label>
-                        <input type="text" class="form-control" name="name" id="name" value="{{ $employee->name }}">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ $employee->name }}">
+                        @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="email">Почта</label>
-                        <input type="text" class="form-control" name="email" id="email" value="{{ $employee->email }}">
+                        <input type="text" class="form-control @error('email') is-invalid @enderror"  name="email" id="email" value="{{ $employee->email }}">
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="dob">Дата рождения</label>
-                        <input type="text" class="form-control" name="dob" id="dob" value="{{ $employee->dob }}">
+                        <input type="date" class="form-control @error('dob') is-invalid @enderror" name="dob" id="dob" value="{{ $employee->dob }}">
+                        @error('dob')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="phone">Телефон</label>
-                        <input type="text" class="form-control" name="phone" id="phone" value="{{ $employee->phone }}">
+                        <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" value="{{ $employee->phone }}">
+                        @error('phone')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Пароль</label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password">
+                        @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Подтверждение пароля</label>
+                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" id="password_confirmation">
+                        @error('password_confirmation')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="specs">Специализация</label>
-                        <select name="specs[]" id="specs" multiple="multiple">
+                        <select name="specs[]" id="specs" multiple="multiple" {{ Auth::guard('backend')->user()->is_admin ? '' : 'disabled="true"' }}>
                             @foreach ($specs as $spec)
                                 <option value="{{ $spec->id }}" {{ $employee->specs->contains(function ($value, $key) use ($spec) {
                                     return $spec->id == $value->id;
@@ -43,7 +78,7 @@
                     <div class="form-group">
                         <label for="type_payment">Тип оплаты:</label>
                         <p>
-                            <select name="payment_type_id" id="type_payment">
+                            <select name="payment_type_id" id="type_payment" {{ Auth::guard('backend')->user()->is_admin ? '' : 'disabled="true"' }}>
                                 @foreach ($paymentType as $pType)
                                     <option value="{{ $pType->id }}" {{ $employee->payment->id == $pType->id ? 'selected' : '' }} >{{ $employee->payment->name }}</option>
                                 @endforeach

@@ -70,12 +70,15 @@
                                     href="{{ route('backend.employees.show', ['employee' => Auth::guard('backend')->user()]) }}">
                                     Профиль
                                 </a>
+                                <a class="dropdown-item" href="{{ route('backend.projects') }}">
+                                    Проекты
+                                </a>
                                 @if (Auth::guard('backend')->user()->is_admin)
                                 <a class="dropdown-item" href="{{ route('backend.employees.index') }}">
                                     Сотрудники
                                 </a>
-                                <a class="dropdown-item" href="{{ route('backend.projects') }}">
-                                    Проекты
+                                <a class="dropdown-item" href="{{ route('backend.clients.index') }}">
+                                    Клиенты
                                 </a>
                                 @endif
                                 <a class="dropdown-item" href="{{ route('backend.logout') }}" onclick="event.preventDefault();

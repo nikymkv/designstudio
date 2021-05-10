@@ -3,10 +3,10 @@
 @section('content')
     <div class="row text-center">
         <div class="col-sm"></div>
-        <div class="col-sm-6">
+        <div class="col-sm-10">
             <h2>Клиенты</h2>
             <table class="table">
-                <thead>
+                <thead class="table-head">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Имя</th>
@@ -14,14 +14,14 @@
                     <th scope="col">Телефон</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="table-body">
                     @foreach($clients as $client)
-                        <tr>
+                        <tr onclick="window.location.href='{{ route('backend.clients.show', ['client' => $client]) }}'">
                             <td>
                                 {{ $client->id }}
                             </td>
                             <td>
-                                <a href="{{ route('backend.clients.show', ['client' => $client]) }}">{{ $client->name }}</a>
+                                {{ $client->name }}
                             </td>
                             <td>
                                 {{ $client->email }}

@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@if($errors->any())
-    {{ dd($errors->messages()) }}
-@endif
 <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-7 ml-2">
@@ -14,27 +11,63 @@
                     @csrf
                     <div class="form-group">
                         <label for="name_company">Название компании</label>
-                        <input type="text" class="form-control" name="name_company" id="name_company">
+                        <input type="text" class="form-control @error('name_company') is-invalid @enderror" name="name_company" id="name_company">
+                    
+                        @error('name_company')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="scope">Специализация компании</label>
-                        <input type="text" class="form-control" name="scope" id="scope">
+                        <input type="text" class="form-control @error('scope') is-invalid @enderror" name="scope" id="scope">
+                   
+                        @error('scope')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="date_created">Дата создания</label>
-                        <input type="text" class="form-control" name="date_created" id="date_created" value="{{now()}}" readonly>
+                        <input type="text" class="form-control @error('date_created') is-invalid @enderror" name="date_created" id="date_created" value="{{date('Y-m-d')}}" readonly>
+                    
+                        @error('date_created')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="deadline">Дедлайн</label>
-                        <input type="text" class="form-control" name="deadline" id="deadline">
+                        <input type="date" class="form-control @error('deadline') is-invalid @enderror" name="deadline" id="deadline">
+                    
+                        @error('deadline')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="proposed_payment">Предложенная цена</label>
-                        <input type="number" class="form-control" name="proposed_payment" id="proposed_payment">
+                        <input type="number" class="form-control @error('proposed_payment') is-invalid @enderror" name="proposed_payment" id="proposed_payment">
+                    
+                        @error('proposed_payment')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="price">Итоговая цена</label>
-                        <input type="number" class="form-control" name="price" id="price">
+                        <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" id="price">
+                   
+                        @error('price')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                     <p>
                         <label for="current_employee_id">Сотрудник</label>
@@ -57,7 +90,13 @@
                     </p>
                     <p>
                         <label for="description">Комментарий</label>
-                        <textarea name="description" id="description" style="width:100%;" rows="10"></textarea>
+                        <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" style="width:100%;" rows="10"></textarea>
+
+                        @error('description')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </p>
                     <button type="submit" class="part-btn">Сохранить</button>
                 </form>

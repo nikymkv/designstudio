@@ -28,7 +28,7 @@ class StoreEmployeeRequest extends FormRequest
             'email' => 'required|email|unique:employees,email',
             'password' => 'required|string|min:4|confirmed',
             'dob' => 'required|date|date_format:Y-m-d',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:20',
             'payment_type_id' => 'required|numeric',
             'hourly_payment' => 'nullable|numeric',
             'is_admin' => 'sometimes|numeric',

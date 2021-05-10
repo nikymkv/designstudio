@@ -4,7 +4,7 @@ namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProjectRequest extends FormRequest
+class UpdateProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,8 +31,6 @@ class StoreProjectRequest extends FormRequest
             'proposed_payment' => 'nullable|numeric',
             'price' => 'nullable|numeric',
             'current_employee_id' => 'required|numeric',
-            'client_id' => 'required|numeric',
-            'service_id' => 'sometimes|numeric',
             'description' => 'nullable|string|max:32000',
         ];
     }

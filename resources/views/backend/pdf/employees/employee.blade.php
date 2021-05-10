@@ -53,7 +53,7 @@
                     <tr>
                         <td>{{ ++$key }}</td>
                         <td>{{ $project->name_company }}</td>
-                        <td>{{ $project->service->name }}</td>
+                        <td>{{ $project->service->name }} ({{ $project->service->type }})</td>
                         <td>{{ $project->client->name }}</td>
                         <td>{{ $project->status->last()->name ?? '' }}</td>
                         <td>{{ $project->date_created }}</td>

@@ -20,6 +20,11 @@ class Project extends Model
         'current_status_id',
         'service_id',
         'description',
+        'answers',
+    ];
+
+    protected $casts = [
+        'answers' => 'array',
     ];
 
     public function status()

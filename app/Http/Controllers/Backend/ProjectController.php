@@ -11,6 +11,7 @@ use App\Models\Employee;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Http\Requests\Project\StoreProjectRequest;
+use App\Http\Requests\Project\UpdateProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -36,9 +37,20 @@ class ProjectController extends Controller
 
             return view('backend.project.index', compact('projects', 'enTab'));
         } else {
-            $projects = Project::where('current_employee_id', \Auth::guard('backend')->user()->id)->get();
+            $type = $request->input('param');
+            $enTab = 0;
+            if ($type == 1) {
+                $projects = Project::where('current_status_id', 23)
+                ->where('current_employee_id', \Auth::guard('backend')->user()->id)
+                ->get();
+                $enTab = 1;
+            } else {
+                $projects = Project::where('current_status_id', '!=', 23)
+                ->where('current_employee_id', \Auth::guard('backend')->user()->id)
+                ->get();
+            }
 
-            return view('backend.project.index', compact('projects'));
+            return view('backend.project.index', compact('projects', 'enTab'));
         }
     }
 
@@ -69,19 +81,26 @@ class ProjectController extends Controller
 
     public function store(StoreProjectRequest $request, Project $project)
     {
-        $project = $project->create($request->all());
+        $validated = $request->validated();
         $status = Status::join('service_statuses', 'statuses.id', '=', 'service_statuses.status_id')
-                        ->where('service_statuses.service_id', $project->service_id)
+                        ->where('service_statuses.service_id', $validated['service_id'])
                         ->select('service_statuses.status_id as id')
                         ->orderBy('service_statuses.status_id', 'asc')
                         ->get()
                         ->first();
+
+        $validated['current_status_id'] = $status->id;
+        
+        $project = $project->create($validated);
+
         ProjectStatus::create([
             'status_id' => $status->id,
             'project_id' => $project->id,
             'employee_id' => $project->current_employee_id,
             'date_created' => now(),
         ]);
+
+        return redirect()->route('backend.projects');
     }
 
     /**
@@ -102,11 +121,11 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
         $input = $request->only(['name_company', 'scope', 'date_created', 'deadline', 'proposed_payment', 'price', 'current_employee_id', 'client_id', 'current_status_id', 'service_id', 'description']);
 
-        if ($project->current_status_id != $input['current_status_id']) {
+        if ((int)$project->current_status_id != (int)$input['current_status_id']) {
             ProjectStatus::create([
                 'status_id' => $input['current_status_id'],
                 'project_id' => $project->id,
@@ -122,8 +141,8 @@ class ProjectController extends Controller
             'deadline' => $input['deadline'],
             'proposed_payment' => $input['proposed_payment'],
             'price' => $input['price'],
-            'current_employee_id' => $input['current_employee_id'] != $project->current_employee_id ? $input['current_employee_id'] : $project->current_employee_id,
-            'current_status_id' => $input['current_status_id'] != $project->current_status_id ? $input['current_status_id'] : $project->current_status_id,
+            'current_employee_id' => (int)$input['current_employee_id'] != (int)$project->current_employee_id ? $input['current_employee_id'] : $project->current_employee_id,
+            'current_status_id' => (int)$input['current_status_id'] != (int)$project->current_status_id ? $input['current_status_id'] : $project->current_status_id,
             'description' => $input['description'],
         ]);
 
@@ -138,6 +157,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        ProjectStatus::where('project_id', $project->id)->delete();
+        $project->delete();
+
+        return redirect()->route('backend.projects');
     }
 }

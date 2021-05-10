@@ -101,11 +101,15 @@ class EmployeeController extends Controller
         if ( ! $this->isAdmin()) {
             return redirect()->back();
         }
+        
         $validated = $request->validated();
+
         $employee->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => \Hash::make($validated['name']),
+            'password' => isset($validated['password'])
+                            ? \Hash::make($validated['password'])
+                            : $employee->password,
             'dob' => $validated['dob'],
             'phone' => $validated['phone'],
             'payment_type_id' => $validated['payment_type_id'],

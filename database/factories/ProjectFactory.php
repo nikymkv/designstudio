@@ -17,6 +17,8 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(Project::class, function (Faker $faker) {
+    $service_id = rand(1, 4);
+
     return [
         'name_company' => $this->faker->company,
         'scope' => $this->faker->sentence(),
@@ -24,7 +26,15 @@ $factory->define(Project::class, function (Faker $faker) {
         'client_id' => 1, 
         'current_employee_id' => 1,
         'current_status_id' => 1,
-        'service_id' => rand(1, 5),
+        'service_id' => $service_id,
         'description' => $this->faker->text(),
+        'answers' => [
+            'url' => 'http://mywebsite.com',
+            'site-modules' => 'module 1, module 2',
+            'gamma' => 'my gamma',
+            'photo' => 'my photo',
+            'content' => 'yes',
+            'celi' => 'my celi',
+        ],
     ];
 });

@@ -18,7 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->date('dob');
-            $table->string('phone', 15);
+            $table->string('phone', 20);
             $table->unsignedBigInteger('payment_type_id');
             $table->float('hourly_payment')->default(0.00);
             $table->boolean('is_admin')->default(FALSE);

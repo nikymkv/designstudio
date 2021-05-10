@@ -2,6 +2,10 @@
 
 Route::redirect('/', 'login', 301);
 
+Route::prefix('webhook')->group(function () {
+    Route::post('create_project', 'WebhookController@createProject')->name('webhook-create-project');
+});
+
 /**
  * Web routes
  */
