@@ -84,12 +84,14 @@ class EmployeeController extends Controller
         $enTab = 0;
         if ($type == 1) {
             $projects = Project::where('current_status_id', 23)
-                ->where('current_employee_id', $employee->id)
+                ->join('project_employees', 'projects.id', '=', 'project_employees.project_id')
+                ->where('project_employees.employee_id', $employee->id)
                 ->get();
             $enTab = 1;
         } else {
             $projects = Project::where('current_status_id', '!=', 23)
-                ->where('current_employee_id', $employee->id)
+                ->join('project_employees', 'projects.id', '=', 'project_employees.project_id')
+                ->where('project_employees.employee_id', $employee->id)
                 ->get();
         }
 

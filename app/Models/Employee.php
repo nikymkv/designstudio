@@ -67,4 +67,14 @@ class Employee extends Authenticatable
     {
         return $query->where('current_status_id', 23);
     }
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'project_employees', 'employee_id', 'project_id');
+    }
+
+    public function availableProjects()
+    {
+        return $this->projects->where('current_status_id', '!=', 23);
+    }
 }

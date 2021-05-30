@@ -17,15 +17,12 @@ class CreateProjectStatusesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('status_id');
             $table->unsignedBigInteger('project_id');
-            $table->unsignedBigInteger('employee_id');
             $table->datetime('date_created');
 
             $table->engine = "InnoDB";
 
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('project_id')->references('id')->on('projects');
-            $table->foreign('employee_id')->references('id')->on('employees');
-
         });
     }
 

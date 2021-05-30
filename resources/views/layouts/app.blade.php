@@ -29,7 +29,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-dark shadow-sm">
             <div class="container">
 
-                @if ( Auth::guard('backend')->check() )
+                @if ( Request::is('backend/*') )
                 <a class="navbar-brand" href="{{ route('backend.projects') }}">
                     <img src="{{ asset('images/logo.svg') }}" width="110" alt="">
                 </a>
@@ -37,16 +37,14 @@
                 <a class="navbar-brand" href="{{ route('web.projects.index') }}">
                     <img src="{{ asset('images/logo.svg') }}" width="110" alt="">
                 </a>
-                @else
-                <a class="navbar-brand" href="{{ route('web.portfolio.index') }}">
-                    <img src="{{ asset('images/logo.svg') }}" width="110" alt="">
-                </a>
                 @endif
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line" style="margin-bottom: 0;"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -99,14 +97,13 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item"
-                                    href="{{ route('web.client.show') }}">
+                                <a class="dropdown-item" href="{{ route('web.client.show') }}">
                                     Профиль
                                 </a>
                                 <a class="dropdown-item" href="{{ route('web.projects.index') }}">
                                     Проекты
                                 </a>
-                                <a class="dropdown-item" href="{{ route('web.portfolio.index') }}">
+                                <a class="dropdown-item" href="https://part.bz/portfolio">
                                     Портфолио
                                 </a>
                                 <a class="dropdown-item" href="{{ route('web.logout') }}" onclick="event.preventDefault();
@@ -121,7 +118,8 @@
                         </li>
                         @else
                         <li class="nav-item dropdown">
-                            <a class="dropdown-item login" href="{{ route('web.login') }}">Войти</a>
+                            <a class="dropdown-item login"
+                                href="{{ Route::is('backend.*') ? route('backend.login') : route('web.login') }}">Войти</a>
                         </li>
                         @endif
                     </ul>

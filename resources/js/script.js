@@ -10,9 +10,8 @@ $(document).ready(function () {
         width: '100%',
         minimumResultsForSearch: -1
     });
-    $('#current_employee_id').select2({
+    $('#current_employees_id').select2({
         width: '100%',
-        minimumResultsForSearch: -1
     });
     $('#service_id').select2({
         width: '100%',

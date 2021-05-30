@@ -38,7 +38,7 @@
                 @foreach($projects as $key => $project)
                 <tr onclick="window.location.href='{{ route('web.projects.show', ['project' => $project]) }}';">
                     <td>
-                        {{ $key }}
+                        {{ ++$key }}
                     </td>
                     <td>
                         {{ $project->name_company }}

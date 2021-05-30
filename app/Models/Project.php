@@ -15,7 +15,6 @@ class Project extends Model
         'deadline',
         'proposed_payment',
         'price',
-        'current_employee_id',
         'client_id',
         'current_status_id',
         'service_id',
@@ -34,9 +33,20 @@ class Project extends Model
                     ->withPivot('date_created');
     }
 
-    public function currentEmployee()
+    public function currentEmployees()
     {
-        return $this->belongsTo(Employee::class, 'current_employee_id');
+        return $this->belongsToMany(Employee::class, 'project_employees', 'project_id', 'employee_id');
+    }
+
+    public function currentEmployeesToStr()
+    {
+        $employees = $this->currentEmployees;
+        $arr = [];
+        foreach ($employees as $employee) {
+            $arr[] = $employee->name;
+        }
+        
+        return implode(', ', $arr);
     }
 
     public function client()

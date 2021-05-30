@@ -87,6 +87,12 @@ class WebhookController extends Controller
             ]),
         ]);
 
+        $admin = Employee::where('is_admin', 1)->first();
+        
+        if ($admin) {
+            $project->currentEmployees()->attach([$admin->id]);
+        }
+
         $status = Status::join('service_statuses', 'statuses.id', '=', 'service_statuses.status_id')
                         ->where('service_statuses.service_id', $project->service_id)
                         ->select('service_statuses.status_id as id')
@@ -97,7 +103,6 @@ class WebhookController extends Controller
         ProjectStatus::create([
             'status_id' => $status->id,
             'project_id' => $project->id,
-            'employee_id' => $project->current_employee_id,
             'date_created' => now(),
         ]);
 

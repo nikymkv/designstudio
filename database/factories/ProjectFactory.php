@@ -24,7 +24,6 @@ $factory->define(Project::class, function (Faker $faker) {
         'scope' => $this->faker->sentence(),
         'date_created' => $this->faker->dateTime($timezone = 'Europe/Moscow'),
         'client_id' => 1, 
-        'current_employee_id' => 1,
         'current_status_id' => 1,
         'service_id' => $service_id,
         'description' => $this->faker->text(),

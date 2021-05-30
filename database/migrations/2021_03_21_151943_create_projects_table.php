@@ -21,7 +21,6 @@ class CreateProjectsTable extends Migration
             $table->datetime('deadline')->nullable();
             $table->float('proposed_payment')->nullable();
             $table->float('price')->nullable();
-            $table->unsignedBigInteger('current_employee_id');
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('current_status_id')->nullable();
             $table->unsignedBigInteger('service_id');

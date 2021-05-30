@@ -11,7 +11,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="name_company">Название компании</label>
-                        <input type="text" class="form-control @error('name_company') is-invalid @enderror" name="name_company" id="name_company">
+                        <input type="text" class="form-control @error('name_company') is-invalid @enderror" name="name_company" id="name_company" value="{{ old('name_company') ?? '' }}">
                     
                         @error('name_company')
                         <span class="invalid-feedback" role="alert">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="form-group">
                         <label for="scope">Специализация компании</label>
-                        <input type="text" class="form-control @error('scope') is-invalid @enderror" name="scope" id="scope">
+                        <input type="text" class="form-control @error('scope') is-invalid @enderror" name="scope" id="scope" value="{{ old('scope') ?? '' }}">
                    
                         @error('scope')
                         <span class="invalid-feedback" role="alert">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
                         <label for="deadline">Дедлайн</label>
-                        <input type="date" class="form-control @error('deadline') is-invalid @enderror" name="deadline" id="deadline">
+                        <input type="date" class="form-control @error('deadline') is-invalid @enderror" name="deadline" id="deadline" value="{{ old('deadline') ?? '' }}">
                     
                         @error('deadline')
                         <span class="invalid-feedback" role="alert">
@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                         <label for="proposed_payment">Предложенная цена</label>
-                        <input type="number" class="form-control @error('proposed_payment') is-invalid @enderror" name="proposed_payment" id="proposed_payment">
+                        <input type="number" class="form-control @error('proposed_payment') is-invalid @enderror" name="proposed_payment" id="proposed_payment" value="{{ old('proposed_payment') ?? '' }}">
                     
                         @error('proposed_payment')
                         <span class="invalid-feedback" role="alert">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="form-group">
                         <label for="price">Итоговая цена</label>
-                        <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" id="price">
+                        <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" id="price" value="{{ old('price') ?? '' }}">
                    
                         @error('price')
                         <span class="invalid-feedback" role="alert">
@@ -70,8 +70,8 @@
                         @enderror
                     </div>
                     <p>
-                        <label for="current_employee_id">Сотрудник</label>
-                        <select name="current_employee_id" id="current_employee_id">
+                        <label for="current_employees_id">Сотрудник</label>
+                        <select name="current_employees_id[]" id="current_employees_id" multiple>
                             @foreach ($employees as $employee)
                             <option value="{{ $employee->id }}">
                                 {{ $employee->name }}
@@ -90,7 +90,7 @@
                     </p>
                     <p>
                         <label for="description">Комментарий</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" style="width:100%;" rows="10"></textarea>
+                        <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" style="width:100%;" rows="10">{{ old('description') ?? '' }}</textarea>
 
                         @error('description')
                         <span class="invalid-feedback" role="alert">

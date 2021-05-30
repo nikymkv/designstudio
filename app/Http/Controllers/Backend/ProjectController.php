@@ -40,13 +40,31 @@ class ProjectController extends Controller
             $type = $request->input('param');
             $enTab = 0;
             if ($type == 1) {
-                $projects = Project::where('current_status_id', 23)
-                ->where('current_employee_id', \Auth::guard('backend')->user()->id)
+                $projects = Project::with(['service', 'client'])->where('current_status_id', 23)
+                ->select([
+                    'projects.id AS id',
+                    'projects.date_created AS date_created',
+                    'projects.name_company AS name_company',
+                    'projects.service_id AS service_id',
+                    'projects.client_id AS client_id',
+                ])
+                ->join('project_employees', 'projects.id', 'project_employees.project_id')
+                ->join('employees', 'project_employees.employee_id', 'employees.id')
+                ->where('employees.id', \Auth::guard('backend')->user()->id)
                 ->get();
                 $enTab = 1;
             } else {
-                $projects = Project::where('current_status_id', '!=', 23)
-                ->where('current_employee_id', \Auth::guard('backend')->user()->id)
+                $projects = Project::with(['service', 'client'])->where('current_status_id', '!=', 23)
+                ->select([
+                    'projects.id AS id',
+                    'projects.date_created AS date_created',
+                    'projects.name_company AS name_company',
+                    'projects.service_id AS service_id',
+                    'projects.client_id AS client_id',
+                ])
+                ->join('project_employees', 'projects.id', 'project_employees.project_id')
+                ->join('employees', 'project_employees.employee_id', 'employees.id')
+                ->where('employees.id', \Auth::guard('backend')->user()->id)
                 ->get();
             }
 
@@ -93,10 +111,11 @@ class ProjectController extends Controller
         
         $project = $project->create($validated);
 
+        $project->currentEmployees()->attach($validated['current_employees_id']);
+
         ProjectStatus::create([
             'status_id' => $status->id,
             'project_id' => $project->id,
-            'employee_id' => $project->current_employee_id,
             'date_created' => now(),
         ]);
 
@@ -123,13 +142,12 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $input = $request->only(['name_company', 'scope', 'date_created', 'deadline', 'proposed_payment', 'price', 'current_employee_id', 'client_id', 'current_status_id', 'service_id', 'description']);
+        $input = $request->only(['name_company', 'scope', 'date_created', 'deadline', 'proposed_payment', 'price', 'current_employees_id', 'client_id', 'current_status_id', 'service_id', 'description']);
 
         if ((int)$project->current_status_id != (int)$input['current_status_id']) {
             ProjectStatus::create([
                 'status_id' => $input['current_status_id'],
                 'project_id' => $project->id,
-                'employee_id' => $input['current_employee_id'],
                 'date_created' => now(),
             ]);
         }
@@ -141,12 +159,13 @@ class ProjectController extends Controller
             'deadline' => $input['deadline'],
             'proposed_payment' => $input['proposed_payment'],
             'price' => $input['price'],
-            'current_employee_id' => (int)$input['current_employee_id'] != (int)$project->current_employee_id ? $input['current_employee_id'] : $project->current_employee_id,
             'current_status_id' => (int)$input['current_status_id'] != (int)$project->current_status_id ? $input['current_status_id'] : $project->current_status_id,
             'description' => $input['description'],
         ]);
 
-        return redirect()->route('backend.projects');
+        $project->currentEmployees()->sync($input['current_employees_id']);
+
+        return redirect()->route('backend.projects.show', ['project' => $project]);
     }
 
     /**

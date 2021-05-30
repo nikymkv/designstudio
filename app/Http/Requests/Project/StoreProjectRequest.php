@@ -30,7 +30,7 @@ class StoreProjectRequest extends FormRequest
             'deadline' => 'nullable|date|after:date_created|date_format:Y-m-d',
             'proposed_payment' => 'nullable|numeric',
             'price' => 'nullable|numeric',
-            'current_employee_id' => 'required|numeric',
+            'current_employees_id' => 'required|array',
             'client_id' => 'required|numeric',
             'service_id' => 'sometimes|numeric',
             'description' => 'nullable|string|max:32000',

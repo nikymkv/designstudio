@@ -26,31 +26,41 @@ class PdfController extends Controller
         $startDate = $request->input('startDate') ?? NULL;
         $endDate = $request->input('endDate') ?? NULL;
 
+        if ($typeEvent != 4 && $startDate === NULL) {
+            return back();
+        }
+
         if ($typeEvent == 1) { // Дата рождения
             if ($startDate && $endDate) {
                 $data['employees'] = Employee::whereBetween('dob', [$startDate, $endDate])->get();
             } else if ($startDate) {
-                $data['employees'] = Employee::where('dob', $startDate)->get();
+                $data['employees'] = Employee::whereBetween('dob', [$startDate, now()])->get();
             }
         } else if ($typeEvent == 2) { // Дата принятия
             if ($startDate && $endDate) {
                 $data['employees'] = Employee::whereBetween('hired', [$startDate, $endDate])->get();
             } else if ($startDate) {
-                $data['employees'] = Employee::where('hired', $startDate)->get();
+                $data['employees'] = Employee::whereBetween('hired', [$startDate, now()])->get();
             }
         } else if ($typeEvent == 3) { // Дата увольнения
             if ($startDate && $endDate) {
                 $data['employees'] = Employee::whereBetween('dismissed', [$startDate, $endDate])->get();
             } else if ($startDate) {
-                $data['employees'] = Employee::where('dismissed', $startDate)->get();
+                $data['employees'] = Employee::whereBetween('dismissed', [$startDate, now()])->get();
             }
+        } else if ($typeEvent == 4) {
+            $data['employees'] = Employee::with('projects')->get();
         } else {
             abort(404);
         }
 
-        $this->generatePdf('backend.pdf.employees.employees', $data, true);
+        if ($typeEvent != 4) {
+            $this->generatePdf('backend.pdf.employees.employees', $data, true);
+        } else {
+            $this->generatePdf('backend.pdf.employees.load_employees', $data, true);
+        }
 
-        return $this->pdf->stream('employees.pdf');
+        return $this->pdf->stream('employees_' . date('Y_m_d') . '.pdf');
     }
 
     public function handleEmployee(Request $request)
@@ -71,17 +81,21 @@ class PdfController extends Controller
         $startDate = $request->input('startDate') ?? NULL;
         $endDate = $request->input('endDate') ?? NULL;
 
+        if ($startDate === NULL) {
+            return back();
+        }
+
         if ($startDate && $endDate) {
             $data['projects'] = Project::whereBetween('date_created', [$startDate, $endDate])->get();
         } else if ($startDate) {
-            $data['projects'] = Project::where('date_created', $startDate)->get();
+            $data['projects'] = Project::whereBetween('date_created', [$startDate, now()])->get();
         } else {
             abort(404);
         }
 
         $this->generatePdf('backend.pdf.projects.projects', $data, true);
 
-        return $this->pdf->stream('projects.pdf');
+        return $this->pdf->stream('projects_' . date('Y_m_d') . '.pdf');
     }
 
     public function handleProject(Request $request)

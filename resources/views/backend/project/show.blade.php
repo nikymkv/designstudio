@@ -89,10 +89,10 @@
                     </div>
                     @if (\Auth::guard('backend')->user()->is_admin)
                     <p>
-                        <select name="current_employee_id" id="current_employee_id">
+                        <select name="current_employees_id[]" id="current_employees_id" multiple="multiple">
                             @foreach ($employees as $employee)
                             <option value="{{ $employee->id }}"
-                                {{ $employee->id === $project->currentEmployee->id ? 'selected' : ''}}>
+                                {{ ! empty($project->currentEmployees->whereIn('id', $employee->id)->count()) ? 'selected' : ''}}>
                                 {{ $employee->name }}</option>
                             @endforeach
                         </select>
@@ -110,10 +110,11 @@
                     <div>
                         <label for="employee">Над проектом работает:</label>
                         <p>
-                            <a id="employee"
-                                href="{{ route('backend.employees.show', ['employee' => $project->currentEmployee->id]) }}">
-                                {{ $project->currentEmployee->name }}
+                            @foreach ($project->currentEmployees as $item)
+                            <a id="employee" href="{{ route('backend.employees.show', ['employee' => $item]) }}">
+                                {{ $item->name }}
                             </a>
+                            @endforeach
                         </p>
                     </div>
                     <div>

@@ -84,19 +84,70 @@
         <div class="modal-body">
             <form id="export_form" action="{{ route('backend.pdf.handle.employees') }}" method="POST">
                 @csrf
-                <div class="form-group">
-                    <label for="typeEvent">Событие:</label>
-                    <select name="typeEvent" id="typeEvent">
+                <div class="form-group" id="select_type_event">
+                    <label for="typeEvent">Тип:</label>
+                    <select name="typeEvent" id="typeEvent" onchange="typeEventChange()">
                         <option value="1">Дата рождения</option>
                         <option value="2">Дата принятия</option>
                         <option value="3">Дата увольнения</option>
+                        <option value="4">Текущая занятость</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <script>
+                    function typeEventChange()
+                    {
+                        let typeEvent = document.getElementById('typeEvent')
+                        if (typeEvent.value == 4) {
+                            removeDateForm()
+                        } else {
+                            if ( ! document.getElementById('start_date_form')) {
+                                let startDateForm = document.createElement('div')
+                                startDateForm.className = 'form-group'
+                                startDateForm.id = 'start_date_form'
+                                let labelStart = document.createElement('label')
+                                labelStart.htmlFor = 'startDate'
+                                labelStart.textContent = 'С:'
+                                inputStart = document.createElement('input')
+                                inputStart.setAttribute('type', 'date')
+                                inputStart.setAttribute('name', 'startDate')
+                                inputStart.setAttribute('id', 'startDate')
+                                startDateForm.append(labelStart)
+                                startDateForm.append(inputStart)
+                                select_type_event.after(startDateForm)
+                            }
+                            if ( ! document.getElementById('end_date_form')) {
+                                let endDateForm = document.createElement('div')
+                                endDateForm.className = 'form-group'
+                                endDateForm.id = 'end_date_form'
+                                let labelStart = document.createElement('label')
+                                labelStart.htmlFor = 'endDate'
+                                labelStart.textContent = 'По:'
+                                inputStart = document.createElement('input')
+                                inputStart.setAttribute('type', 'date')
+                                inputStart.setAttribute('name', 'endDate')
+                                inputStart.setAttribute('id', 'endDate')
+                                endDateForm.append(labelStart)
+                                endDateForm.append(inputStart)
+                                start_date_form.after(endDateForm)
+                            }
+                        }
+                    }
+
+                    function removeDateForm() {
+                        if (document.getElementById('start_date_form')) {
+                            document.getElementById('start_date_form').remove()
+                        }
+
+                        if (document.getElementById('end_date_form')) {
+                            document.getElementById('end_date_form').remove()
+                        }
+                    }
+                </script>
+                <div class="form-group" id="start_date_form">
                     <label for="startDate">С:</label>
                     <input type="date" name="startDate" id="startDate">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="end_date_form">
                     <label for="endDate">По:</label>
                     <input type="date" name="endDate" id="endDate">
                 </div>

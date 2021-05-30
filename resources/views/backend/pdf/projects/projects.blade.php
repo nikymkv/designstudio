@@ -33,7 +33,7 @@
                     <td>{{ $project->date_created }}</td>
                     <td>{{ $project->deadline ?? 'Пусто' }}</td>
                     <td>{{ $project->price }}</td>
-                    <td>{{ $project->currentEmployee->name }}</td>
+                    <td>{{ $project->currentEmployeesToStr() }}</td>
                     <td>{{ $project->client->name }}</td>
                     <td>{{ $project->service->name }} ({{ $project->service->type }})</td>
                     <td>{{ $project->status->last()->name }}</td>
