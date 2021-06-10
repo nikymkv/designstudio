@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\Project;
+use App\Http\Requests\Client\StoreClientRequest;
 use App\Http\Requests\Client\UpdateClientRequest;
 
 class ClientController extends Controller
@@ -15,6 +16,20 @@ class ClientController extends Controller
         $clients = Client::all();
 
         return view('backend.clients.index', \compact('clients'));
+    }
+
+    public function create()
+    {
+        return view('backend.clients.create');
+    }
+
+    public function store(StoreClientRequest $request)
+    {
+        $validated = $request->validated();
+        $validated['password'] = \Hash::make($validated['password']);
+        Client::create($validated);
+
+        return redirect()->route('backend.clients.index');
     }
 
     public function show(Client $client)

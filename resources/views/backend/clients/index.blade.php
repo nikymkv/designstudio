@@ -5,6 +5,11 @@
         <div class="col-sm"></div>
         <div class="col-sm-10">
             <h2>Клиенты</h2>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('backend.clients.create') }}">Добавить клиента</a>
+                </li>
+            </ul>
             <table class="table">
                 <thead class="table-head">
                 <tr>
