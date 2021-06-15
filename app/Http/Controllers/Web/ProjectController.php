@@ -17,12 +17,14 @@ class ProjectController extends Controller
             $projects = Project::with('status')
                 ->where('current_status_id', 23)
                 ->where('client_id', Auth::guard('web')->user()->id)
+                ->orderBy('date_created', 'desc')
                 ->get();
             $enTab = 1;
         } else {
             $projects = Project::with('status')
                 ->where('current_status_id', '!=', 23)
                 ->where('client_id', Auth::guard('web')->user()->id)
+                ->orderBy('date_created', 'desc')
                 ->get();
         }
 

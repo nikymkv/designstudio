@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Client;
 use App\Models\Status;
 use App\Models\ProjectStatus;
+use App\Models\Employee;
 use App\Http\Requests\StoreFormProjectRequest;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -77,7 +78,6 @@ class WebhookController extends Controller
             'date_created' => now(),
             'deadline' => $deadline,
             'proposed_payment' => $input['cost'],
-            'current_employee_id' => 1,
             'client_id' => $client->id,
             'current_status_id' => $status->id,
             'service_id' => $service_id,
@@ -86,6 +86,8 @@ class WebhookController extends Controller
                 'url', 'site-modules', 'gamma', 'photo', 'content', 'celi'
             ]),
         ]);
+
+        $project->currentEmployees()->attach([1]);
 
         $admin = Employee::where('is_admin', 1)->first();
         

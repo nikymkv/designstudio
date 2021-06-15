@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\Project;
 use App\Models\Employee;
+use App\Models\ProjectEmployees;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Dompdf\Dompdf;
@@ -68,7 +69,11 @@ class PdfController extends Controller
         $employeeId = $request->input('employee_id');
         $data['employee'] = Employee::findOrFail($employeeId);
         if ($data['employee']) {
-            $data['projects'] = Project::where('current_employee_id', $data['employee']->id)->get();
+            $projectsId = ProjectEmployees::where('employee_id', $data['employee']->id)->pluck('project_id')->toArray();
+            $data['projects'] = Project::with(['service', 'client', 'status'])
+                ->whereIn('id', $projectsId)
+                ->get();
+
             $this->generatePdf('backend.pdf.employees.employee', $data, true);
             return $this->pdf->stream('employee_'.$data['employee']->id.'.pdf');
         } else {

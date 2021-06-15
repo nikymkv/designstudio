@@ -28,10 +28,12 @@ class ProjectController extends Controller
             $enTab = 0;
             if ($type == 1) {
                 $projects = Project::where('current_status_id', 23)
+                ->orderBy('date_created', 'desc')
                 ->get();
                 $enTab = 1;
             } else {
                 $projects = Project::where('current_status_id', '!=', 23)
+                ->orderBy('date_created', 'desc')
                 ->get();
             }
 
@@ -51,6 +53,7 @@ class ProjectController extends Controller
                 ->join('project_employees', 'projects.id', 'project_employees.project_id')
                 ->join('employees', 'project_employees.employee_id', 'employees.id')
                 ->where('employees.id', \Auth::guard('backend')->user()->id)
+                ->orderBy('date_created', 'desc')
                 ->get();
                 $enTab = 1;
             } else {
@@ -65,6 +68,7 @@ class ProjectController extends Controller
                 ->join('project_employees', 'projects.id', 'project_employees.project_id')
                 ->join('employees', 'project_employees.employee_id', 'employees.id')
                 ->where('employees.id', \Auth::guard('backend')->user()->id)
+                ->orderBy('date_created', 'desc')
                 ->get();
             }
 

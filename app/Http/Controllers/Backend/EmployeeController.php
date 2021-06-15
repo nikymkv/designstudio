@@ -86,12 +86,14 @@ class EmployeeController extends Controller
             $projects = Project::where('current_status_id', 23)
                 ->join('project_employees', 'projects.id', '=', 'project_employees.project_id')
                 ->where('project_employees.employee_id', $employee->id)
+                ->orderBy('date_created', 'desc')
                 ->get();
             $enTab = 1;
         } else {
             $projects = Project::where('current_status_id', '!=', 23)
                 ->join('project_employees', 'projects.id', '=', 'project_employees.project_id')
                 ->where('project_employees.employee_id', $employee->id)
+                ->orderBy('date_created', 'desc')
                 ->get();
         }
 
